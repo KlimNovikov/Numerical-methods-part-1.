@@ -1,6 +1,4 @@
-﻿#include <iostream>
-#include <cmath>
-#include <algorithm>
+#include <iostream>
 
 void Gauss(int N, double** A, double* B, double* ANS) {
 
