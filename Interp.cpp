@@ -86,8 +86,8 @@ int main() {
 	double y0 = Interp(N, x, U, x0);
 
 	// Вывод результата
-	cout << y0 << endl;
-	cout << sin(x0) << endl;
+	cout << "Real Number: 		" << y0 << endl;
+	cout << "Interpolated number: 	" << sin(x0) << endl;
 
 	return 0;
 }
