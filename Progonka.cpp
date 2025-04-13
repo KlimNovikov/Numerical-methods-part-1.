@@ -1,62 +1,41 @@
-﻿#include <iostream>
-
-// Решение трёхдиагональной СЛАУ методом прогонки
-// N    - размерность системы
-// a[i] - поддиагональные коэффициенты (a[0] = 0 по соглашению)
-// b[i] - диагональные коэффициенты
-// c[i] - наддиагональные коэффициенты (c[N-1] = 0 по соглашению)
-// d[i] - правая часть
-// ANS  - массив, куда будет записано решение x[i]
-
+#include <iostream>
+using namespace std;
 
 void Progonka(int N, double* a, double* b, double* c, double* d, double* ANS) {
+    double* ksi = new double[N];
+    double* eta = new double[N];
 
-    // Вспомогательные массивы для прогоночных коэффициентов
-    double* alpha   = new double[N];
-    double* beta    = new double[N];
+    ksi[0] = -c[0] / b[0];
+    eta[0] = d[0] / b[0];
 
-    // Инициализация alpha[0] и beta[0]
-    alpha[0]    = -c[0] / b[0];
-    beta[0]     = d[0] / b[0];
-
-    // Прямой ход: вычисляем alpha[i], beta[i]
-    for (int i = 1; i < N; ++i) {
-        double denom    = b[i] + a[i] * alpha[i - 1];
-        alpha[i]        = -c[i] / denom;
-        beta[i]         = (d[i] - a[i] * beta[i - 1]) / denom;
+    for (int i = 1; i < N; i++) {
+        double znam = a[i - 1] * ksi[i - 1] + b[i];
+        if (i != N - 1) {
+            ksi[i] = -c[i] / znam;
+        }
+        eta[i] = (d[i] - a[i - 1] * eta[i - 1]) / znam;
     }
 
-    // Обратный ход: восстанавливаем решение
-    ANS[N - 1] = beta[N - 1];
-    for (int i = N - 2; i >= 0; --i) {
-        ANS[i] = alpha[i] * ANS[i + 1] + beta[i];
+    ANS[N - 1] = eta[N - 1];
+    for (int i = N - 2; i >= 0; i--) {
+        ANS[i] = ksi[i] * ANS[i + 1] + eta[i];
     }
-
-    // Освобождаем динамическую память
-    delete[] alpha;
-    delete[] beta;
 }
-
-int main() {
-    // Пример: Решим систему размерности N=3:
-    //  b0*x0 + c0*x1         = d0
-    //  a1*x0 + b1*x1 + c1*x2 = d1
-    //         a2*x1 + b2*x2 = d2
-
-    int N = 3;
-    double a[3] = { 0.0,  1.0,  2.0 };  // Поддиагональ (a[0]=0)
-    double b[3] = { 4.0,  5.0,  3.0 };  // Главная диагональ
-    double c[3] = { -1.0, -2.0, 0.0 };  // Наддиагональ (c[2]=0)
-    double d[3] = { 1.0, -1.0, 2.0 };   // Правая часть
-
-    double ANS[3];
-
+int main()
+{
+    int N = 5;
+    double* a, * b, * c, * d, * ANS;
+    a = new double[N - 1];
+    b = new double[N];
+    c = new double[N - 1];
+    d = new double[N];
+    ANS = new double[N];
+    a[0] = -3; a[1] = -2; a[2] = -1; a[3] = 0;
+    c[0] = -2; c[1] = -1; c[2] = 0; c[3] = 1;
+    b[0] = 12; b[1] = 20; b[2] = 30; b[3] = 42, b[4] = 56;
+    d[0] = 8; d[1] = 34; d[2] = 86; d[3] = 170, d[4] = 280;
     Progonka(N, a, b, c, d, ANS);
-
-    std::cout << "Solution:\n";
-    for (int i = 0; i < N; ++i) {
-        std::cout << "x" << i << " = " << ANS[i] << "\n";
+    for (int i = 0; i < N; i++) {
+        cout << ANS[i] << endl;
     }
-
-    return 0;
 }
