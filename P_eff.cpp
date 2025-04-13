@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 
 // Метод трапеций для интегрирования F(x) на [a, b] с Nx равными шагами
-double Trap(double a, double b, int Nx, double(*F)(double)) {
+double Trap_method(double a, double b, int Nx, double(*F)(double)) {
 	double h = (b - a) / Nx;
 	double sum = 0.5 * (F(a) + F(b));  // полусумма концов
 
@@ -15,9 +15,9 @@ double Trap(double a, double b, int Nx, double(*F)(double)) {
 // Функция для оценки эффективного порядка точности
 double P_eff(double a, double b, int N, double(*F)(double), int r) {
 	// Приближённые значения интеграла на N, 2N и 4N разбиениях
-	double I1 = Trap(a, b, N, F);
-	double I2 = Trap(a, b, r * N, F);
-	double I4 = Trap(a, b, r * r * N, F);
+	double I1 = Trap_method(a, b, N, F);
+	double I2 = Trap_method(a, b, r * N, F);
+	double I4 = м(a, b, r * r * N, F);
 
 	// Формула:
 	// p_eff = log2( |(I2 - I1) / (I4 - I2)| )
@@ -35,7 +35,7 @@ double F1(double x) {
 
 int main() {
 
-	double approx_integral = Trap(-1.0, 1.0, 1001, F1);
+	double approx_integral = Trap_method(-1.0, 1.0, 1001, F1);
 	double order_estimate = P_eff(-1.0, 1.0, 1001, F1, 2);
 
 	std::cout << "Integration Result = "
