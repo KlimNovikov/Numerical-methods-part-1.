@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 
 // Метод трапеций для интегрирования F(x) на [a, b] с Nx равными шагами
-double Trap(double a, double b, int Nx, double (*F)(double)) {
+double Trap_method(double a, double b, int Nx, double (*F)(double)) {
     double h = (b - a) / Nx;
     double sum = 0.5 * (F(a) + F(b));  // полусумма концов
 
@@ -15,13 +15,13 @@ double Trap(double a, double b, int Nx, double (*F)(double)) {
 // Функция для вычисления интеграла с заданной точностью eps (апостериорная оценка)
 double Integration(double a, double b, int N, double (*F)(double), double eps) {
     // Начальное вычисление
-    double I_prev = Trap(a, b, N, F);
+    double I_prev = Trap_method(a, b, N, F);
 
     // Итерационный процесс
     while (true) {
         // Увеличиваем число разбиений в 2 раза
         int N_new = 2 * N;
-        double I_new = Trap(a, b, N_new, F);
+        double I_new = Trap_method(a, b, N_new, F);
 
         // Проверяем, достигнута ли точность
         if (std::fabs(I_new - I_prev) < eps) {
