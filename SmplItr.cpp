@@ -7,21 +7,29 @@ double Phi(double x, double (*F)(double)) {
 }
 
 // Метод простой итерации.
+ // Метод простой итерации.
 double SmplItr(double x0, double (*F)(double), double eps) {
 
     // Устанавливаем изначальный значения.
-    double x = x0;
-    double x_new = Phi(x, F);
+    double x_this = x0;
+    double x_prev = x0;
+    double x_new = Phi(x_this, F);
+    double criteria = 2 * eps;
 
-    //Пока не достигли нужной точности, используем формулу.
-    while (abs(x_new - x) > eps) {
-        x = x_new;
-        x_new = Phi(x, F);
+    do 
+    {
+        x_prev = x_this;
+        x_this = x_new;
+        x_new = Phi(x_this, F);
+
+        criteria = std::abs((x_new - x_this) / (1 - (x_new - x_this) / (x_this - x_prev)));
     }
+    while (criteria > eps);
 
 
     return x_new;
 }
+
 
 // Примеры:
 double F1(double x) {
