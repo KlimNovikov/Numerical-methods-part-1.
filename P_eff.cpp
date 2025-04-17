@@ -24,7 +24,7 @@ double P_eff(double a, double b, int N, double(*F)(double), int r) {
 	double numerator = I2 - I1;
 	double denominator = I4 - I2;
 	double ratio = std::fabs(numerator / denominator);
-	double p = std::log(ratio) / std::log(2.0);         // Создаем логарифм по основанию 2: log2(x) = ln(x) / ln(2)
+	double p = std::log(ratio) / std::log(r);         // Создаем логарифм по основанию 2: log2(x) = ln(x) / ln(2)
 	return p;
 }
 
